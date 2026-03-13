@@ -32,3 +32,56 @@ def agendar():
     db.session.add(novo_financeiro)
     db.session.commit()
     return redirect('/')
+    {% extends "base.html" %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <h1 class="mb-4">Dashboard - Lulu Dentes 🦷</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Receita Total (Paga)</h5>
+                    <h2 class="card-text">R$ {{ "%.2f"|format(total_recebido) }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Consultas para Hoje</h5>
+                    <h2 class="card-text">{{ total_consultas_hoje }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h3>Próximos Atendimentos</h3>
+            <table class="table table-hover bg-white shadow-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Paciente</th>
+                        <th>Procedimento</th>
+                        <th>Data/Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consulta in consultas %}
+                    <tr>
+                        <td>{{ consulta.paciente.nome }}</td>
+                        <td>{{ consulta.procedimento }}</td>
+                        <td>{{ consulta.data_hora.strftime('%d/%m/%Y %H:%M') }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+                     
