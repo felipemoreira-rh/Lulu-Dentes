@@ -6,7 +6,9 @@ db = SQLAlchemy()
 class Paciente(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), nullable=False)
-    # Relacionamentos: Um paciente tem muitos agendamentos e registros financeiros
+    cpf = db.Column(db.String(14), unique=True)
+    telefone = db.Column(db.String(20))
+    # Relacionamentos
     agendamentos = db.relationship('Agenda', backref='paciente', lazy=True)
     financeiro = db.relationship('Financeiro', backref='paciente', lazy=True)
 
@@ -19,7 +21,7 @@ class Agenda(db.Model):
 class Financeiro(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     valor = db.Column(db.Float, nullable=False)
-    tipo = db.Column(db.String(10)) # Ex: 'Entrada'
-    status = db.Column(db.String(10)) # Ex: 'Pago'
+    tipo = db.Column(db.String(20), default='Receita') 
+    status = db.Column(db.String(20), default='Pendente') # Pendente ou Pago
     paciente_id = db.Column(db.Integer, db.ForeignKey('paciente.id'))
-    data_pagamento = db.Column(db.DateTime, default=datetime.utcnow)
+    data_registro = db.Column(db.DateTime, default=datetime.utcnow)
